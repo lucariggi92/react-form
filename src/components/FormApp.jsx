@@ -17,7 +17,7 @@ export default function FormApp() {
 
         // Impedisce il refresh della pagina (comportamento di default del form)
         event.preventDefault();
-        
+
         // Creo un nuovo array copiando il vecchio e aggiungendo il nuovo titolo
         const newTitles = [...Title, newTitle];
         setTitle(newTitles); // aggiorno lo state con i titoli aggiornati
@@ -29,19 +29,33 @@ export default function FormApp() {
         // Svuoto gli input una volta inviato il form
         setNewTitle('');
         setNewText('');
+
+        //funzione per rimuovere dalla lista
+
     }
 
+
+    function remove(indeToRemove) {
+        const newTitleWithout = [];
+        for (let i = 0; i < Title.length; i++) {
+            if (i !== indeToRemove) {
+                newTitleWithout.push(Title[i]);
+            }
+        }
+          setTitle(newTitleWithout);
+    }
+  
 
     // La parte  mostrata a schermo
     return (
         <>
             {/* FORM DI input*/}
-            <form onSubmit={submitHandler}> 
+            <form onSubmit={submitHandler}>
 
                 {/* Label + input per il TITOLO */}
                 <label htmlFor="articolo">Titolo nuovo articolo</label>
 
-                <input 
+                <input
                     id="articolo"
                     type="text"
                     value={newTitle}             // il valore dell’input è quello nuovo inserito
@@ -54,15 +68,15 @@ export default function FormApp() {
                 {/* Label + input per il CONTENUTO */}
                 <label htmlFor="testo">Contenuto Articolo</label>
 
-                <input 
+                <input
                     id="testo"
                     type="text"
                     value={newText}             // collegato allo state newText
                     onChange={(event) => {      // aggiorna newText (Array)
                         setNewText(event.target.value)
-                    }} 
+                    }}
                 />
-              
+
                 {/* Bottone di submit */}
                 <button type="submit" className='btn btn-primary'>Aggiungi</button>
             </form>
@@ -78,6 +92,7 @@ export default function FormApp() {
 
                             {/* Testo dell’articolo, tramite lo stesso index del titolo */}
                             <p>{Text[index]}</p>
+                            <button onClick={() => remove(index)}>Rimuovi</button>
                         </li>
                     )
                 })}
