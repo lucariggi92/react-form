@@ -22,7 +22,7 @@ function App() {
 
         <div className='py-5 gap-3 mb-3"'>
           <FormApp />
-          <button className='btn btn-primary warning p-x-5'>Aggiungi</button>
+        
         </div>
 
         {/* LIST */}
