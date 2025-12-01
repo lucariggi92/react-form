@@ -1,37 +1,87 @@
 import { useState } from "react"
 
 export default function FormApp() {
-    const [Title, setTitle] = useState('Inserisci Titolo articolo');
-    const [Text, setText] = useState('Inserisci Contenuto articolo');
 
+    // Array che conterrà tutti i titoli e contenuti inseriti
+    const [Title, setTitle] = useState([]);
+    const [Text, setText] = useState([]);
+
+    // Stato che gestisce il valore digitato nell'input del titolo
+    // Questo è solamente il testo momentaneo del campo input
+    const [newTitle, setNewTitle] = useState('');
+    const [newText, setNewText] = useState('');
+
+
+    // Funzione che si attiva quando l'utente preme "Aggiungi" nel form
+    function submitHandler(event) {
+
+        // Impedisce il refresh della pagina (comportamento di default del form)
+        event.preventDefault();
+        
+        // Creo un nuovo array copiando il vecchio e aggiungendo il nuovo titolo
+        const newTitles = [...Title, newTitle];
+        setTitle(newTitles); // aggiorno lo state con i titoli aggiornati
+
+        // Stessa cosa per il contenuto dell'articolo
+        const newTexts = [...Text, newText];
+        setText(newTexts); // aggiorno l'array dei testi
+
+        // Svuoto gli input una volta inviato il form
+        setNewTitle('');
+        setNewText('');
+    }
+
+
+    // La parte  mostrata a schermo
     return (
         <>
-            <form onSubmit={()=>{
+            {/* FORM DI input*/}
+            <form onSubmit={submitHandler}> 
 
-            }}>
-                <label for="articolo"> Titolo nuovo articolo
-                    <input id="articolo" type="text" value={Title} onChange={(event) => {
-                        const newTitle = event.target.value;
-                        setTitle(newTitle)
-                    }} />
-                </label>
+                {/* Label + input per il TITOLO */}
+                <label htmlFor="articolo">Titolo nuovo articolo</label>
 
-                <label for=" testo"> Contenuto Articolo
-                    <input id="testo" type="text" value={Text} onChange={(event) => {
-                        const newText = event.target.value;
-                        setText(newText)
-                    }} />
-                </label>
+                <input 
+                    id="articolo"
+                    type="text"
+                    value={newTitle}             // il valore dell’input è quello nuovo inserito
+                    onChange={(event) => {       // quando scrivo, aggiorno newTitle (Array)
+                        setNewTitle(event.target.value)
+                    }}
+                />
 
 
-                <ul>
-                    <li className=" font-weight: 700 "><h2>{Title} </h2> <br />{Text}</li>
-                </ul>
-              <button className='btn btn-primary warning p-x-5'>Aggiungi</button>
+                {/* Label + input per il CONTENUTO */}
+                <label htmlFor="testo">Contenuto Articolo</label>
+
+                <input 
+                    id="testo"
+                    type="text"
+                    value={newText}             // collegato allo state newText
+                    onChange={(event) => {      // aggiorna newText (Array)
+                        setNewText(event.target.value)
+                    }} 
+                />
+              
+                {/* Bottone di submit */}
+                <button type="submit" className='btn btn-primary'>Aggiungi</button>
             </form>
 
 
+            {/* LISTA DEGLI ARTICOLI INSERITI */}
+            <ul>
+                {Title.map((CurTitle, index) => {
+                    return (
+                        <li key={index} className="font-weight:700">
+                            {/* Titolo dell’articolo */}
+                            <h2>{CurTitle}</h2>
 
+                            {/* Testo dell’articolo, tramite lo stesso index del titolo */}
+                            <p>{Text[index]}</p>
+                        </li>
+                    )
+                })}
+            </ul>
         </>
     )
 }

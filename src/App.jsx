@@ -13,7 +13,6 @@ function App() {
       <header>
         <div className='container py-2'><h1>Lista Articoli</h1></div>
       </header>
-      {/* 
       {/* //MAIN */}
 
 
